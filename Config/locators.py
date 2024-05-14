@@ -29,6 +29,9 @@ class Locators:
     approvalText=(By.XPATH,"//div[@class='field-group']")
     assigneeText=(By.XPATH,"//span[@id='assignee-val']")
     reporterText=(By.XPATH,"//span[@id='reporter-val']")
+    sprintButton=(By.XPATH,"//strong[@title='Sprint']")
+    sprintText=(By.XPATH,"//div[@id='customfield_10004-val']")
+
 
 
 

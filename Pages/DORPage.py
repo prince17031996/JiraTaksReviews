@@ -106,7 +106,7 @@ class DOR(Basepage):
             return "Add the Priority"
 
     def approvalField(self):
-        if self.getText(Locators.approvalText)=="None":
+        if self.getText(Locators.approvalText)=="NONE":
             return "Update the approval Workflow"
         else:
             return "Passed"
