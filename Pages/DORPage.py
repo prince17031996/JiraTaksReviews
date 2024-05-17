@@ -24,7 +24,8 @@ class DOR(Basepage):
 
         # Write headers to the first row of the "Result" worksheet if it's a new workbook
         if worksheet.max_row == 1:
-            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria", "Description","Priority","Approval Workflow","Asignee/Reporter","Sprint","Due Date"]
+            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria",
+                       "Description","Priority","Approval Workflow","Asignee/Reporter","Sprint","Due Date","Complaince Type"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -131,6 +132,12 @@ class DOR(Basepage):
         else:
             return "Add Due Date"
 
+    def complianceField(self):
+        if self.isVisible(Locators.complianceButton):
+            return "Passed"
+        else:
+            return "Add complaince type"
+
 
     def get_test_results(self):
         title = self.title()
@@ -145,7 +152,8 @@ class DOR(Basepage):
         approval_text = self.approvalField()
         assigneeReporter_text = self.assigneeReporterField()
         sprint_text = self.sprintField()
-        due_date_test=self.dueDateField()
+        due_date_text=self.dueDateField()
+        compliance_type=self.complianceField()
 
         return {
             "Title": title,
@@ -160,5 +168,7 @@ class DOR(Basepage):
             "Approval" : approval_text,
             "AssginneReporter":assigneeReporter_text,
             "Sprint":sprint_text,
-            "Due Date":due_date_test
+            "Due Date":due_date_text,
+            "ComplianceType":compliance_type
+
         }
