@@ -1,30 +1,30 @@
 import openpyxl
 from openpyxl.styles import PatternFill
 
-from Config.TestData import TestData
+from Config.TestData import TestData, TestDataTestScript
 from Config.locators import Locators
 from Pages.basePage import Basepage
 
 
-class DOR(Basepage):
+class TestScript(Basepage):
 
     def __init__(self, driver):
         super().__init__(driver)
-        obj = TestData()
+        obj = TestDataTestScript()
         self.urls = obj.Links()
 
     def run_tests(self, url):
         self.driver.get(url)
 
         # Load the workbook and select the "Result" worksheet or create it if it doesn't exist
-        workbook = openpyxl.load_workbook(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\DOR_Check.xlsx')
+        workbook = openpyxl.load_workbook(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\TestScript_Check.xlsx')
         if 'Result' not in workbook.sheetnames:
             workbook.create_sheet(title='Result')
         worksheet = workbook['Result']
 
         # Write headers to the first row of the "Result" worksheet if it's a new workbook
         if worksheet.max_row == 1:
-            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria", "Description","Priority","Approval Workflow","Asignee/Reporter","Sprint","Due Date"]
+            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria", "Description","Priority","Approval Workflow","Asignee/Reporter"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -44,7 +44,7 @@ class DOR(Basepage):
                 cell.fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
 
         # Save the workbook
-        workbook.save(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\DOR_Check.xlsx')
+        workbook.save(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\TestScript_Check.xlsx')
 
         # Return the test results
         return test_results
@@ -119,18 +119,6 @@ class DOR(Basepage):
         else:
             return "Passed"
 
-    def sprintField(self):
-        if self.isVisible(Locators.sprintButton):
-            return "Passed"
-        else:
-            return "Update Sprint Details"
-
-    def dueDateField(self):
-        if self.isVisible(Locators.dueDateButton):
-            return "Passed"
-        else:
-            return "Add Due Date"
-
 
     def get_test_results(self):
         title = self.title()
@@ -144,8 +132,6 @@ class DOR(Basepage):
         priority_text = self.priorityField()
         approval_text = self.approvalField()
         assigneeReporter_text = self.assigneeReporterField()
-        sprint_text = self.sprintField()
-        due_date_test=self.dueDateField()
 
         return {
             "Title": title,
@@ -158,7 +144,5 @@ class DOR(Basepage):
             "Description": description_text,
             "Priority": priority_text,
             "Approval" : approval_text,
-            "AssginneReporter":assigneeReporter_text,
-            "Sprint":sprint_text,
-            "Due Date":due_date_test
+            "AssginneReporter":assigneeReporter_text
         }
