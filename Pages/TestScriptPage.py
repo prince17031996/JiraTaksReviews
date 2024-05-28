@@ -24,7 +24,8 @@ class TestScript(Basepage):
 
         # Write headers to the first row of the "Result" worksheet if it's a new workbook
         if worksheet.max_row == 1:
-            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria", "Description","Priority","Approval Workflow","Asignee/Reporter"]
+            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Description"
+                ,"Priority","Approval Workflow","Assignee/Reporter","Sprint"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -64,10 +65,10 @@ class TestScript(Basepage):
             return "Update the Epic link"
 
     def typeField(self):
-        if self.getText(Locators.typeText)=="Story":
+        if self.getText(Locators.typeText)=="Test":
             return "Passed"
         else:
-            return "Update the type as Story"
+            return "Update the type as Test"
 
     def affectedVersonField(self):
         if self.getText(Locators.affectedVersionText)=="None":
@@ -87,12 +88,6 @@ class TestScript(Basepage):
             return "Passed"
         else:
             return "Add the Story Point"
-
-    def acceptanceCriteriaField(self):
-        if self.isVisible(Locators.acceptanceCriteriaButton):
-            return "Passed"
-        else:
-            return "Add the acceptance criteria"
 
     def descriptionField(self):
         if self.isVisible(Locators.descriptionButton):
@@ -119,6 +114,12 @@ class TestScript(Basepage):
         else:
             return "Passed"
 
+    def sprintField(self):
+        if self.isVisible(Locators.sprintButton):
+            return "Passed"
+        else:
+            return "Update Sprint Details"
+
 
     def get_test_results(self):
         title = self.title()
@@ -127,11 +128,11 @@ class TestScript(Basepage):
         affected_version_text = self.affectedVersonField()
         fix_version_text = self.fixVersionField()
         story_point_text = self.storyPointField()
-        acceptance_criteria_text = self.acceptanceCriteriaField()
         description_text = self.descriptionField()
         priority_text = self.priorityField()
         approval_text = self.approvalField()
         assigneeReporter_text = self.assigneeReporterField()
+        sprint_text = self.sprintField()
 
         return {
             "Title": title,
@@ -140,9 +141,10 @@ class TestScript(Basepage):
             "Affected Version": affected_version_text,
             "Fix Version": fix_version_text,
             "Story Point": story_point_text,
-            "Acceptance Criteria": acceptance_criteria_text,
             "Description": description_text,
             "Priority": priority_text,
             "Approval" : approval_text,
-            "AssginneReporter":assigneeReporter_text
+            "AssginneReporter":assigneeReporter_text,
+            "Sprint" : sprint_text
+
         }

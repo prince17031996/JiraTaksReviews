@@ -1,29 +1,87 @@
+import time
+
 from selenium import webdriver
 from selenium.common import TimeoutException, NoSuchElementException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from Pages.basePage import Basepage
 
 driver = webdriver.Chrome()
-driver.get("https://jira.jnj.com/browse/JCVZ-998")
+driver.get("https://jira.jnj.com/browse/JCVZ-932")
+#https://jira.jnj.com/browse/JCVZ-1030
 driver.maximize_window()
+driver.implicitly_wait(10)
 
-approvalText=(By.XPATH, "//div[@class='field-group']")
-#print(approvalText.text)
-def getText(bylocator):
+#element=driver.find_element(By.XPATH,"//div[@class='ReactVirtualized__Grid__innerScrollContainer']//child::div[@data-index]")
+count=0
+"""element=driver.find_element(By.XPATH,(f"//div[@data-index='{count}']"))
+if element:
+    print("True")
+else:
+    print("False")"""
+
+""""action=driver.find_element(By.XPATH,"//div[@data-testid='Action-view']//child::div[@class='test-step-field-content']")
+expectedResult=driver.find_element(By.XPATH,"//div[@data-testid='Expected Result-view']//child::div[@class='test-step-field-content'][]")
+for x in range(10):
     try:
-        element = WebDriverWait(driver, 20).until(EC.visibility_of_element_located(bylocator))
-        # print("Text is visible ")
-        if element:
-            return (element.text)
+        if driver.find_element(By.XPATH,(f"//div[@data-index='{x}']")):
+            print(count)
+            if driver.find_elements(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x+1}]")):
+                #l.append(driver.find_elements(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x+1}]")).text)
+            count+=1
+    except NoSuchElementException:
+        break"""""
+
+""""l=list()
+pixel=180
+data=driver.find_elements(By.XPATH,"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])")
+print(len(data))
+for x in range(1,len(data)+1):
+    try:
+        z=driver.find_element(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x}]"))
+        if z:
+            print(z.text)
+        driver.execute_script(f"window.scrollBy(0, {pixel});")
+        pixel += 180
 
     except NoSuchElementException:
-        # print("text is not visible on the webpage.")
-        return False
+        break"""""
+l = list()
+data = driver.find_elements(By.XPATH,"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])")
+print(len(data))
 
-if getText(approvalText)=="NONE":
-    print("failed")
-else:
-    print("passed")
+scroll_amount = 180
+pixel=0
+for x in range(1, len(data) + 1):
+    try:
+        z = driver.find_element(By.XPATH,
+                                f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x}]")
+        if z:
+            print(z.text)
+        # Scroll down by dynamically increasing pixels using JavaScript
+        #driver.execute_script("arguments[0].scrollIntoView();",z)
+
+        time.sleep(1)
+        # Add a small delay to allow content to load
+    except (NoSuchElementException, TimeoutException) as e:
+        print("Error: come out")
+        break
+
+
+
+#print(count)
+time.sleep(5)
+
+
+
+
+
+
+
+
+
+
 
 

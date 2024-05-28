@@ -34,7 +34,12 @@ class Locators:
     dueDateButton=(By.XPATH,"//label[@for='duedate']")
     dueDateText=(By.XPATH,"//span[@id='due-date']")
 
-
+    #TestScript Locators
+    issueResolutionButton=(By.XPATH,"//strong[@title='Issue Resolution']")
+    issueResolutionText=(By.XPATH,"//div[@id='customfield_10200-val']")
+    testCategoryButton = (By.XPATH,"//strong[@title='Test Category']")
+    testCategoryText = (By.XPATH,"//div[@id='customfield_13801-val']")
+    #//div[@class='ReactVirtualized__Grid__innerScrollContainer']//child::div[@data-index]
 
 
 
