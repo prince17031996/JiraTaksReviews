@@ -39,9 +39,12 @@ class Locators:
     issueResolutionText=(By.XPATH,"//div[@id='customfield_10200-val']")
     testCategoryButton = (By.XPATH,"//strong[@title='Test Category']")
     testCategoryText = (By.XPATH,"//div[@id='customfield_13801-val']")
-    #//div[@class='ReactVirtualized__Grid__innerScrollContainer']//child::div[@data-index]
-
-
+    #actualResultText=(By.XPATH,f"//div[@data-index='{x}']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[contains(@class,'step-fields sc-hGoxap')]//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']//div[@data-testid='Action-view']//div[@class='test-step-field-content']")
+    expectedResultText=(By.XPATH)
+    testTypeButton=(By.XPATH,"//ul[@id='test-details']//child::strong[text()='Type:']")
+    testTypeText=(By.XPATH,"//strong[@title='Test type']")
+    issueLinkButton=(By.XPATH,"//h4[@id='linkingmodule-label']")
+    testExecutionButton=(By.XPATH,"//td//a[@class='issue-link']")
 
 
     #(By.XPATH,"")

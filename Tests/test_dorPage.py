@@ -7,9 +7,9 @@ class Test_dor(BaseTest):
     obj=TestData()
 
 
-    @pytest.fixture(params=obj.Links())
+    """@pytest.fixture(params=obj.Links())
     def url(self, request):
-        return request.param
+        return request.param"""""
 
 
     def test_get_text1(self):

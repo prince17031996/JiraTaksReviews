@@ -1,31 +1,36 @@
+import time
+
 import openpyxl
 from openpyxl.styles import PatternFill
+from selenium.common import NoSuchElementException, TimeoutException
+from selenium.webdriver.common.by import By
 
-from Config.TestData import TestData, TestDataTestScript
+from Config.TestData import TestData
 from Config.locators import Locators
 from Pages.basePage import Basepage
 
 
-class TestScript(Basepage):
+class TESTSCRIPT(Basepage):
 
-    def __init__(self, driver):
+    """"def __init__(self, driver):
         super().__init__(driver)
-        obj = TestDataTestScript()
-        self.urls = obj.Links()
+        obj = TestData()
+        self.urls = obj.Links()"""""
 
     def run_tests(self, url):
         self.driver.get(url)
 
         # Load the workbook and select the "Result" worksheet or create it if it doesn't exist
-        workbook = openpyxl.load_workbook(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\TestScript_Check.xlsx')
+        workbook = openpyxl.load_workbook(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\script_Check.xlsx')
         if 'Result' not in workbook.sheetnames:
             workbook.create_sheet(title='Result')
         worksheet = workbook['Result']
 
         # Write headers to the first row of the "Result" worksheet if it's a new workbook
         if worksheet.max_row == 1:
-            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Description"
-                ,"Priority","Approval Workflow","Assignee/Reporter","Sprint"]
+            headers = ["URL", "Title", "Type", "Affected Version", "Fix Version", "Description"
+                , "Priority", "Approval Workflow", "Assignee/Reporter", "Sprint", "Issue Resolution",
+                       "Test Category", "Test Type", "Issue Link", "Execution Link","Action Text","Expected Result"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -45,7 +50,7 @@ class TestScript(Basepage):
                 cell.fill = PatternFill(start_color="FFFF00", end_color="FFFF00", fill_type="solid")
 
         # Save the workbook
-        workbook.save(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\TestScript_Check.xlsx')
+        workbook.save(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\script_Check.xlsx')
 
         # Return the test results
         return test_results
@@ -56,13 +61,6 @@ class TestScript(Basepage):
         else:
             return "Failed"
 
-    def epicField(self):
-        if self.isVisible(Locators.epicButton):
-            # Write 'Passed' to the Excel file and apply green fill
-            return "Passed"
-        else:
-            # Write 'Failed' to the Excel file and apply yellow fill
-            return "Update the Epic link"
 
     def typeField(self):
         if self.getText(Locators.typeText)=="Test":
@@ -82,12 +80,6 @@ class TestScript(Basepage):
         else:
             return "Passed"
 
-
-    def storyPointField(self):
-        if self.isVisible(Locators.storyPointButton):
-            return "Passed"
-        else:
-            return "Add the Story Point"
 
     def descriptionField(self):
         if self.isVisible(Locators.descriptionButton):
@@ -121,30 +113,142 @@ class TestScript(Basepage):
             return "Update Sprint Details"
 
 
+    def issueResolutionField(self):
+        if self.isVisible(Locators.issueResolutionButton):
+            return "Passed"
+        else:
+            return "Add Issue Resolution"
+
+    def categoryTestField(self):
+        if self.isVisible(Locators.testCategoryButton):
+            return "Passed"
+        else:
+            return "Add test Category"
+
+    def typeTestField(self):
+        if self.isVisible(Locators.testTypeButton):
+            return self.getTextTestSteps(Locators.testTypeText)
+        else:
+            return "Update Test Type"
+
+    def issueLinkField(self):
+        if self.isVisible(Locators.issueLinkButton):
+            return "Passed"
+        else:
+            return "Update the Issue Link"
+
+    def executionField(self):
+        if self.isVisible(Locators.testExecutionButton):
+            return "Passed"
+        else:
+            return "Test Execution Not Created"
+
+    def actionField(self):
+        result=""
+        for x in range(0, 10):
+            print("this is x value",x)
+
+            try:
+                action = self.driver.find_element(By.XPATH, f"//div[@data-index='{x}']"
+                                                       f"//div[@class='step-container sc-CtfFt fiKMAr']"
+                                                       f"//div[@class='step-content sc-laTMn ijLfRy']"
+                                                       f"//div[contains(@class,'step-fields sc-hGoxap')]"
+                                                       f"//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']"
+                                                       f"//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']"
+                                                       f"//div[@data-testid='Action-view']//div[@class='test-step-field-content']")
+
+
+                if action:
+                    if len(action.text)>5:
+                        pass
+                    else:
+                        result += f"{x}"
+                        result += " "
+                # Scroll down by dynamically increasing pixels using JavaScript
+                self.driver.execute_script("arguments[0].scrollIntoView();",action)
+
+
+                # Add a small delay to allow content to load
+            except (NoSuchElementException, TimeoutException) as e:
+                print("Error: come out")
+                break
+        ans=f"Please Update action for step no {result}"
+        return ans
+
+    def expectedResultField(self):
+        scrollTo = self.driver.find_element(By.XPATH, "//h4[contains(text(),'Test Details')]")
+        self.driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
+        time.sleep(1)
+        result=""
+        for x in range(0, 10):
+            print("this is x value",x)
+
+            try:
+                expected = self.driver.find_element(By.XPATH, f"//div[@data-index='{x}']"
+                                                         f"//div[@class='step-container sc-CtfFt fiKMAr']"
+                                                         f"//div[@class='step-content sc-laTMn ijLfRy']"
+                                                         f"//div[contains(@class,'step-fields sc-hGoxap')]"
+                                                         f"//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']"
+                                                         f"//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']"
+                                                         f"//div[@data-testid='Expected Result-view']")
+
+                if expected:
+                    if len(expected.text)>5:
+                        pass
+                    else:
+                        result += f"{x}"
+                        result += " "
+                # Scroll down by dynamically increasing pixels using JavaScript
+                self.driver.execute_script("arguments[0].scrollIntoView();",expected)
+
+
+                # Add a small delay to allow content to load
+            except (NoSuchElementException, TimeoutException) as e:
+                print("Error: come out")
+                break
+        ans=f"Please Update expected result for step no {result}"
+        return ans
+
+
+
+
     def get_test_results(self):
         title = self.title()
-        epic_text = self.epicField()
         type_text = self.typeField()
         affected_version_text = self.affectedVersonField()
         fix_version_text = self.fixVersionField()
-        story_point_text = self.storyPointField()
         description_text = self.descriptionField()
         priority_text = self.priorityField()
         approval_text = self.approvalField()
         assigneeReporter_text = self.assigneeReporterField()
         sprint_text = self.sprintField()
+        issueResolution_text = self.issueResolutionField()
+        testCategory_text = self.categoryTestField()
+        testType_text = self.typeTestField()
+        issueLink_text = self.issueLinkField()
+        executionlink_text = self.executionField()
+        action_text=self.actionField()
+        expectedResult_text = self.expectedResultField()
+
+        #action_text = self.actionField()
+        #expectedResult_text= self.expectedResultField()
 
         return {
             "Title": title,
-            "Epic": epic_text,
             "Type": type_text,
             "Affected Version": affected_version_text,
             "Fix Version": fix_version_text,
-            "Story Point": story_point_text,
             "Description": description_text,
             "Priority": priority_text,
             "Approval" : approval_text,
             "AssginneReporter":assigneeReporter_text,
-            "Sprint" : sprint_text
+            "Sprint" : sprint_text,
+            "IssueResolution": issueResolution_text,
+            "TestCategory": testCategory_text,
+            "TestType": testType_text,
+            "IssueLink":issueLink_text,
+            "ExecutionLink":executionlink_text,
+            "Action text": action_text,
+            "Expected text":expectedResult_text
 
         }

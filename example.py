@@ -11,67 +11,59 @@ from Pages.basePage import Basepage
 driver = webdriver.Chrome()
 driver.get("https://jira.jnj.com/browse/JCVZ-1030")
 #https://jira.jnj.com/browse/JCVZ-1030
-driver.maximize_window()
+#driver.maximize_window()
 driver.implicitly_wait(10)
 
 #element=driver.find_element(By.XPATH,"//div[@class='ReactVirtualized__Grid__innerScrollContainer']//child::div[@data-index]")
 count=0
-"""element=driver.find_element(By.XPATH,(f"//div[@data-index='{count}']"))
-if element:
-    print("True")
-else:
-    print("False")"""
 
-""""action=driver.find_element(By.XPATH,"//div[@data-testid='Action-view']//child::div[@class='test-step-field-content']")
-expectedResult=driver.find_element(By.XPATH,"//div[@data-testid='Expected Result-view']//child::div[@class='test-step-field-content'][]")
-for x in range(10):
+
+for x in range(0, 200):
+
     try:
-        if driver.find_element(By.XPATH,(f"//div[@data-index='{x}']")):
-            print(count)
-            if driver.find_elements(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x+1}]")):
-                #l.append(driver.find_elements(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x+1}]")).text)
-            count+=1
-    except NoSuchElementException:
-        break"""""
+        action = driver.find_element(By.XPATH,f"//div[@data-index='{x}']"
+                                         f"//div[@class='step-container sc-CtfFt fiKMAr']"
+                                         f"//div[@class='step-content sc-laTMn ijLfRy']"
+                                         f"//div[contains(@class,'step-fields sc-hGoxap')]"
+                                         f"//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']"
+                                         f"//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']"
+                                         f"//div[@data-testid='Action-view']//div[@class='test-step-field-content']")
 
-""""l=list()
-pixel=180
-data=driver.find_elements(By.XPATH,"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])")
-print(len(data))
-for x in range(1,len(data)+1):
-    try:
-        z=driver.find_element(By.XPATH,(f"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])[{x}]"))
-        if z:
-            print(z.text)
-        driver.execute_script(f"window.scrollBy(0, {pixel});")
-        pixel += 180
-
-    except NoSuchElementException:
-        break"""""
-#l = list()
-#data = driver.find_elements(By.XPATH,"(//div[@data-testid='Action-view']//child::div[@class='test-step-field-content'])")
-#print(len(data))
-
-scroll_amount = 180
-pixel=0
-#  test data insdex //div[@id='test-step-index-10']
-# //div[@data-index='9']
-#parent //div[@data-index='9']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[@class='step-fields sc-hGoxap bDhqzx']
-#//div[@data-index='9']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[@class='step-fields sc-hGoxap bDhqzx']//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@id='field_NATIVE_STEP_NATIVE_33732_7480306']//div[@data-testid='Action-view']//div[@class='test-step-field-content']
-for x in range(0, 20):
-    try:
-        z = driver.find_element(By.XPATH,f"//div[@data-index='{x}']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[@class='step-fields sc-hGoxap bDhqzx']//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']//div[@data-testid='Action-view']//div[@class='test-step-field-content']")
         time.sleep(1)
-        if z:
-            print(z.text)
+        if action:
+            print("this is action text",action.text)
         # Scroll down by dynamically increasing pixels using JavaScript
-        driver.execute_script("arguments[0].scrollIntoView();",z)
+        driver.execute_script("arguments[0].scrollIntoView();",action)
 
         time.sleep(1)
         # Add a small delay to allow content to load
     except (NoSuchElementException, TimeoutException) as e:
         print("Error: come out")
         break
+
+print("Scrolling to the beginning of the webpage...")
+time.sleep(1)
+scrollTo= driver.find_element(By.XPATH,"//h4[contains(text(),'Test Details')]")
+driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
+#print("Scrolled to the beginning.")
+for x in range(0, 200):
+    try:
+
+        expected = driver.find_element(By.XPATH, f"//div[@data-index='{x}']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[contains(@class, 'step-fields sc-hGoxap')]//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']//div[@data-testid='Expected Result-view']")
+
+
+        time.sleep(1)
+        if expected:
+            print("this is expected result",expected.text)
+        # Scroll down by dynamically increasing pixels using JavaScript
+
+        driver.execute_script("arguments[0].scrollIntoView();", expected)
+        time.sleep(1)
+        # Add a small delay to allow content to load
+    except (NoSuchElementException, TimeoutException) as e:
+        print("Error: come out")
+        break
+
 
 
 

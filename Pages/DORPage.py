@@ -8,10 +8,10 @@ from Pages.basePage import Basepage
 
 class DOR(Basepage):
 
-    def __init__(self, driver):
+    """"def __init__(self, driver):
         super().__init__(driver)
         obj = TestData()
-        self.urls = obj.Links()
+        self.urls = obj.Links()"""""
 
     def run_tests(self, url):
         self.driver.get(url)

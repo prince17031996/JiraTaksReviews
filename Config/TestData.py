@@ -16,9 +16,9 @@ class TestData:
 
 obj=TestData()
 
-class TestDataTestScript:
+class TestScriptData:
     def Links(self):
-        workbook = openpyxl.load_workbook("C:\\Users\\PRaj7\\PycharmProjects\\DORUserStory\\Config\\TestScript_Check.xlsx")
+        workbook = openpyxl.load_workbook("C:\\Users\\PRaj7\\PycharmProjects\\DORUserStory\\Config\\script_Check.xlsx")
         sheet = workbook["URL"]
         total_rows = sheet.max_row
         total_colmns = sheet.max_column
@@ -27,6 +27,7 @@ class TestDataTestScript:
             for c in range(1, total_colmns + 1):
                 l.append(sheet.cell(r, c).value)
         return l
+
 class TestDataBug:
     def Links(self):
         workbook = openpyxl.load_workbook("C:\\Users\\PRaj7\\PycharmProjects\\DORUserStory\\Config\\Bug_Check.xlsx")
