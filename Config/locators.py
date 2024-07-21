@@ -16,7 +16,7 @@ class Locators:
     acceptanceCriteriaButton=(By.XPATH,"//strong[@title='Acceptance Criteria']")
     acceptanceCriteriaText=(By.XPATH,"//div[@id='field-customfield_10300']")
     descriptionButton=(By.XPATH,"//h4[contains(text(),'Description')]")
-    descriptionText=(By.XPATH,"//div[@id='description-val']")
+    descriptionText=(By.XPATH,"//div[@id='description-val']//child::div[@class='user-content-block']")
     #descriptionText//div[@id='descriptionmodule']//child::div[@class='mod-content']
     componentButton_optional = (By.XPATH, "//label[contains(text(),'Component/s:')]")
     componentText_optional = (By.XPATH, "span[@id='components-val']")
@@ -45,6 +45,16 @@ class Locators:
     testTypeText=(By.XPATH,"//strong[@title='Test type']")
     issueLinkButton=(By.XPATH,"//h4[@id='linkingmodule-label']")
     testExecutionButton=(By.XPATH,"//td//a[@class='issue-link']")
+
+    #bug Locators
+    rootCauseButton=(By.XPATH,"//label[contains(text(),'Root Cause:')]")
+    severityButton=(By.XPATH,"//label[contains(text(),'Severity:')]")
+
+    #Test Execution Locators
+    actualResultCount=(By.XPATH,"//div[@id='actions-module2']//div[@tabindex='0']//button[@class='aui-button raven-has-results']")
+    actualResultText=(By.XPATH,"")
+
+
 
 
     #(By.XPATH,"")

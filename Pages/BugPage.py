@@ -24,8 +24,8 @@ class BUG(Basepage):
 
         # Write headers to the first row of the "Result" worksheet if it's a new workbook
         if worksheet.max_row == 1:
-            headers = ["URL", "Title", "Epic", "Type", "Affected Version", "Fix Version", "Story Point", "Acceptance Criteria",
-                       "Description","Priority","Approval Workflow","Asignee/Reporter","Sprint"]
+            headers = ["URL", "Title", "Type", "Affected Version", "Fix Version", "Story Point",
+                       "Description","Priority","Assignee","Severity","Root Cause"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -56,16 +56,9 @@ class BUG(Basepage):
         else:
             return "Failed"
 
-    def epicField(self):
-        if self.isVisible(Locators.epicButton):
-            # Write 'Passed' to the Excel file and apply green fill
-            return "Passed"
-        else:
-            # Write 'Failed' to the Excel file and apply yellow fill
-            return "Update the Epic link"
 
     def typeField(self):
-        if self.getText(Locators.typeText)=="Story":
+        if self.getText(Locators.typeText)=="Bug":
             return "Passed"
         else:
             return "Update the type as Story"
@@ -89,85 +82,72 @@ class BUG(Basepage):
         else:
             return "Add the Story Point"
 
-    def acceptanceCriteriaField(self):
-        if self.isVisible(Locators.acceptanceCriteriaButton):
-            return "Passed"
-        else:
-            return "Add the acceptance criteria"
 
     def descriptionField(self):
-        if self.isVisible(Locators.descriptionButton):
+        if len(self.getText(Locators.descriptionText))>30:
             return "Passed"
         else:
-            return "Add the description"
+            return "Add description"
     def priorityField(self):
         if self.isVisible(Locators.priorityButton):
             return "Passed"
         else:
             return "Add the Priority"
 
-    def approvalField(self):
-        if self.getText(Locators.approvalText)=="NONE":
-            return "Update the approval Workflow"
-        else:
-            return "Passed"
 
-    def assigneeReporterField(self):
+    def assigneeField(self):
         if self.getText(Locators.assigneeText)=="Unassigned":
             return "Update the assignee Name"
-        elif self.getText(Locators.assigneeText)==self.getText((Locators.reporterText)):
-            return "Assignee/Reporter Cant be Same"
         else:
             return "Passed"
 
-    def sprintField(self):
-        if self.isVisible(Locators.sprintButton):
-            return "Passed"
-        else:
-            return "Update Sprint Details"
 
-    def dueDateField(self):
-        if self.isVisible(Locators.dueDateButton):
+    def severityField(self):
+        if self.isVisible(Locators.severityButton):
             return "Passed"
         else:
-            return "Add Due Date"
+            return "Add severity"
 
-    def complianceField(self):
-        if self.isVisible(Locators.complianceButton):
+    def rootCauseField(self):
+        if self.isVisible(Locators.rootCauseButton):
             return "Passed"
         else:
-            return "Add complaince type"
+            return "Add rootcause"
+
+
+
+
+
+
+
 
 
     def get_test_results(self):
         title = self.title()
-        epic_text = self.epicField()
         type_text = self.typeField()
         affected_version_text = self.affectedVersonField()
         fix_version_text = self.fixVersionField()
         story_point_text = self.storyPointField()
-        acceptance_criteria_text = self.acceptanceCriteriaField()
         description_text = self.descriptionField()
         priority_text = self.priorityField()
-        approval_text = self.approvalField()
-        assigneeReporter_text = self.assigneeReporterField()
-        sprint_text = self.sprintField()
+        assignee_text = self.assigneeField()
+        severity_text=self.severityField()
+        root_cause_text=self.rootCauseField()
+
         #due_date_text=self.dueDateField()
         #compliance_type=self.complianceField()
 
         return {
             "Title": title,
-            "Epic": epic_text,
             "Type": type_text,
             "Affected Version": affected_version_text,
             "Fix Version": fix_version_text,
             "Story Point": story_point_text,
-            "Acceptance Criteria": acceptance_criteria_text,
             "Description": description_text,
             "Priority": priority_text,
-            "Approval" : approval_text,
-            "AssginneReporter":assigneeReporter_text,
-            "Sprint":sprint_text,
+            "Assginne":assignee_text,
+            "Severity":severity_text,
+            "Root Cause":root_cause_text
            # "Due Date":due_date_text,
             #"ComplianceType":compliance_type
 

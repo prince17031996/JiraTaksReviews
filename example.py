@@ -1,83 +1,58 @@
 import time
-
 from selenium import webdriver
-from selenium.common import TimeoutException, NoSuchElementException
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from Pages.basePage import Basepage
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 driver = webdriver.Chrome()
-driver.get("https://jira.jnj.com/browse/JCVZ-1030")
-#https://jira.jnj.com/browse/JCVZ-1030
-#driver.maximize_window()
-driver.implicitly_wait(10)
-
-#element=driver.find_element(By.XPATH,"//div[@class='ReactVirtualized__Grid__innerScrollContainer']//child::div[@data-index]")
-count=0
-
-
-for x in range(0, 200):
-
-    try:
-        action = driver.find_element(By.XPATH,f"//div[@data-index='{x}']"
-                                         f"//div[@class='step-container sc-CtfFt fiKMAr']"
-                                         f"//div[@class='step-content sc-laTMn ijLfRy']"
-                                         f"//div[contains(@class,'step-fields sc-hGoxap')]"
-                                         f"//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']"
-                                         f"//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']"
-                                         f"//div[@data-testid='Action-view']//div[@class='test-step-field-content']")
-
-        time.sleep(1)
-        if action:
-            print("this is action text",action.text)
-        # Scroll down by dynamically increasing pixels using JavaScript
-        driver.execute_script("arguments[0].scrollIntoView();",action)
-
-        time.sleep(1)
-        # Add a small delay to allow content to load
-    except (NoSuchElementException, TimeoutException) as e:
-        print("Error: come out")
-        break
-
-print("Scrolling to the beginning of the webpage...")
-time.sleep(1)
-scrollTo= driver.find_element(By.XPATH,"//h4[contains(text(),'Test Details')]")
+executionKey="AFJX-11576"
+testIssueKey="AFJX-11010"
+driver.get(f"https://jira.jnj.com/secure/XrayExecuteTest!default.jspa?testExecIssueKey={executionKey}&testIssueKey={testIssueKey}")
+driver.maximize_window()
+time.sleep(2)
+scrollTo=driver.find_element(By.XPATH,"//div[@class='execution-steps-module-heading mod-header']")
 driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
-#print("Scrolled to the beginning.")
-for x in range(0, 200):
+time.sleep(2)
+try:
+    # Example of finding a button using XPath with correct usage
+    button = driver.find_element(By.XPATH, "(//button[@class='aui-button raven-has-results'])[1]")
+    button.click()
+
+
+    print("Button clicked successfully")
+except NoSuchElementException as e:
+    print("errpr")
+time.sleep(5)
+# Loop through potential actual result elements
+for x in range(1, 100):
+    time.sleep(2)
     try:
+        # Construct XPath for each actual result element
+        button = driver.find_element(By.XPATH,f"(//button[@class='aui-button raven-has-results'])[{x}]")
+        time.sleep(5)
 
-        expected = driver.find_element(By.XPATH, f"//div[@data-index='{x}']//div[@class='step-container sc-CtfFt fiKMAr']//div[@class='step-content sc-laTMn ijLfRy']//div[contains(@class, 'step-fields sc-hGoxap')]//div[@class='text-field-holder field-holder sc-itybZL jtGvFH sc-fjmCvl lmUaVJ']//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']//div[@data-testid='Expected Result-view']")
+        button.click()
+        actualResult = driver.find_element(By.XPATH,f"(//div[@class='raven-field-wiki-view']//div[@class='field-content text-wrap'])[{x}]//p")
+        driver.execute_script("arguments[0].scrollIntoView();", actualResult)
+        print(f"actual result {x} is:", actualResult.text)
+        #click on button
+
+        # Wait for the element to be visible
 
 
-        time.sleep(1)
-        if expected:
-            print("this is expected result",expected.text)
-        # Scroll down by dynamically increasing pixels using JavaScript
 
-        driver.execute_script("arguments[0].scrollIntoView();", expected)
-        time.sleep(1)
-        # Add a small delay to allow content to load
-    except (NoSuchElementException, TimeoutException) as e:
-        print("Error: come out")
+        # Scroll element into view (optional)
+
+
+        # Print the text content of the element
+       # if actualResult:
+        #    print(f"actual result {x} is:", actualResult.text)
+
+    except (NoSuchElementException,TimeoutException):
+        print(f"Timeout waiting for actualResult {x} to be visible")
         break
 
 
-
-
-#print(count)
-time.sleep(5)
-
-
-
-
-
-
-
-
-
-
-
-
+# Close the browser window
+driver.quit()

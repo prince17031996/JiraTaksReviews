@@ -32,7 +32,7 @@ class Basepage:
             element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(bylocator))
             #print("Text is visible ")
             if element:
-                return (element.text)
+                return element.text
         except TimeoutException:
             #print("text is not visible on the webpage.")
             return False

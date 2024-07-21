@@ -101,8 +101,6 @@ class TESTSCRIPT(Basepage):
     def assigneeReporterField(self):
         if self.getText(Locators.assigneeText)=="Unassigned":
             return "Update the assignee Name"
-        elif self.getText(Locators.assigneeText)==self.getText((Locators.reporterText)):
-            return "Assignee/Reporter Cant be Same"
         else:
             return "Passed"
 
@@ -126,8 +124,9 @@ class TESTSCRIPT(Basepage):
             return "Add test Category"
 
     def typeTestField(self):
+        type=''
         if self.isVisible(Locators.testTypeButton):
-            return self.getTextTestSteps(Locators.testTypeText)
+            return "Passed"
         else:
             return "Update Test Type"
 
@@ -145,9 +144,9 @@ class TESTSCRIPT(Basepage):
 
     def actionField(self):
         result=""
-        for x in range(0, 10):
-            print("this is x value",x)
 
+        for x in range(0, 100):
+            time.sleep(2)
             try:
                 action = self.driver.find_element(By.XPATH, f"//div[@data-index='{x}']"
                                                        f"//div[@class='step-container sc-CtfFt fiKMAr']"
@@ -163,7 +162,7 @@ class TESTSCRIPT(Basepage):
                         pass
                     else:
                         result += f"{x}"
-                        result += " "
+                        result += ","
                 # Scroll down by dynamically increasing pixels using JavaScript
                 self.driver.execute_script("arguments[0].scrollIntoView();",action)
 
@@ -172,19 +171,21 @@ class TESTSCRIPT(Basepage):
             except (NoSuchElementException, TimeoutException) as e:
                 print("Error: come out")
                 break
-        ans=f"Please Update action for step no {result}"
-        return ans
+        if len(result)>0:
+            return f"Update for step {result}"
+        else:
+            return "Passed"
+
 
     def expectedResultField(self):
         scrollTo = self.driver.find_element(By.XPATH, "//h4[contains(text(),'Test Details')]")
         self.driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
         time.sleep(1)
         result=""
-        for x in range(0, 10):
-            print("this is x value",x)
-
+        for x in range(0, 100):
+            time.sleep(1)
             try:
-                expected = self.driver.find_element(By.XPATH, f"//div[@data-index='{x}']"
+                scroll=self.driver.find_element(By.XPATH, f"//div[@data-index='{x}']"
                                                          f"//div[@class='step-container sc-CtfFt fiKMAr']"
                                                          f"//div[@class='step-content sc-laTMn ijLfRy']"
                                                          f"//div[contains(@class,'step-fields sc-hGoxap')]"
@@ -192,22 +193,27 @@ class TESTSCRIPT(Basepage):
                                                          f"//div[@class='text-field-container sc-iRbamj bhOdCd']//div[@tabindex='-1']"
                                                          f"//div[@data-testid='Expected Result-view']")
 
-                if expected:
-                    if len(expected.text)>5:
-                        pass
-                    else:
-                        result += f"{x}"
-                        result += " "
+
+                print("expected result data -->",scroll.text)
+                if scroll.text=="None":
+                    result += f"{x}"
+                    result += ","
+                else:
+                    pass
+
                 # Scroll down by dynamically increasing pixels using JavaScript
-                self.driver.execute_script("arguments[0].scrollIntoView();",expected)
+                self.driver.execute_script("arguments[0].scrollIntoView();",scroll)
 
 
                 # Add a small delay to allow content to load
             except (NoSuchElementException, TimeoutException) as e:
+
                 print("Error: come out")
                 break
-        ans=f"Please Update expected result for step no {result}"
-        return ans
+        if len(result)>0:
+            return f"Update for step {result}"
+        else:
+            return "Passed"
 
 
 
@@ -226,7 +232,7 @@ class TESTSCRIPT(Basepage):
         testCategory_text = self.categoryTestField()
         testType_text = self.typeTestField()
         issueLink_text = self.issueLinkField()
-        executionlink_text = self.executionField()
+        execution_text = self.executionField()
         action_text=self.actionField()
         expectedResult_text = self.expectedResultField()
 
@@ -247,7 +253,7 @@ class TESTSCRIPT(Basepage):
             "TestCategory": testCategory_text,
             "TestType": testType_text,
             "IssueLink":issueLink_text,
-            "ExecutionLink":executionlink_text,
+            "ExecutionLink":execution_text,
             "Action text": action_text,
             "Expected text":expectedResult_text
 
