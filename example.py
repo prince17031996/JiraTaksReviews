@@ -6,6 +6,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 driver = webdriver.Chrome()
+#executionKey="JCVZ-1050"
+#testIssueKey="JCVZ-1030"
 executionKey="AFJX-11576"
 testIssueKey="AFJX-11010"
 driver.get(f"https://jira.jnj.com/secure/XrayExecuteTest!default.jspa?testExecIssueKey={executionKey}&testIssueKey={testIssueKey}")
@@ -14,26 +16,17 @@ time.sleep(2)
 scrollTo=driver.find_element(By.XPATH,"//div[@class='execution-steps-module-heading mod-header']")
 driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
 time.sleep(2)
-try:
-    # Example of finding a button using XPath with correct usage
-    button = driver.find_element(By.XPATH, "(//button[@class='aui-button raven-has-results'])[1]")
-    button.click()
 
-
-    print("Button clicked successfully")
-except NoSuchElementException as e:
-    print("errpr")
-time.sleep(5)
 # Loop through potential actual result elements
 for x in range(1, 100):
     time.sleep(2)
     try:
         # Construct XPath for each actual result element
-        button = driver.find_element(By.XPATH,f"(//button[@class='aui-button raven-has-results'])[{x}]")
+        button = driver.find_element(By.XPATH,f"(//button[contains(text(),'Actual Result')])[{x}]")
         time.sleep(5)
 
         button.click()
-        actualResult = driver.find_element(By.XPATH,f"(//div[@class='raven-field-wiki-view']//div[@class='field-content text-wrap'])[{x}]//p")
+        actualResult = driver.find_element(By.XPATH,f"(//div[@class='raven-field-wiki-view']//div[@class='field-content text-wrap'])[{x}]")
         driver.execute_script("arguments[0].scrollIntoView();", actualResult)
         print(f"actual result {x} is:", actualResult.text)
         #click on button
