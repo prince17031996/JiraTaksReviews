@@ -30,7 +30,7 @@ class TESTSCRIPTEEXECUTION(Basepage):
         if worksheet.max_row == 1:
             headers = ["URL", "Title", "Type", "Affected Version", "Fix Version", "Description"
                 , "Priority", "Approval Workflow", "Assignee/Reporter", "Sprint", "Issue Resolution",
-                       "Test Category", "Test Type", "Issue Link", "Execution Link"]
+                       "Test Category", "Issue Link"]
             for col, header in enumerate(headers, start=1):
                 worksheet.cell(row=1, column=col, value=header)
 
@@ -56,14 +56,14 @@ class TESTSCRIPTEEXECUTION(Basepage):
         return test_results
 
     def title(self):
-        if self.isVisible(Locators.typeButton):
+        if self.isVisible(Locators.titleText):
             return "Passed"
         else:
             return "Failed"
 
 
     def typeField(self):
-        if self.getText(Locators.typeText)=="Test":
+        if self.getText(Locators.typeText)=="Test Execution":
             return "Passed"
         else:
             return "Update the type as Test"
@@ -123,12 +123,7 @@ class TESTSCRIPTEEXECUTION(Basepage):
         else:
             return "Add test Category"
 
-    def typeTestField(self):
-        type=''
-        if self.isVisible(Locators.testTypeButton):
-            return "Passed"
-        else:
-            return "Update Test Type"
+
 
     def issueLinkField(self):
         if self.isVisible(Locators.issueLinkButton):
@@ -136,33 +131,19 @@ class TESTSCRIPTEEXECUTION(Basepage):
         else:
             return "Update the Issue Link"
 
-    def executionField(self):
+    """def executionField(self):
         if self.isVisible(Locators.testExecutionButton):
             return "Passed"
         else:
-            return "Test Execution Not Created"
+            return "Test Execution Not Created"""""
 
 
-    def actualResultField(self):
-
-       # actualResult=(By.XPATH,f"(//div[@class='raven-field-wiki-view']//child::div[@class='field-content text-wrap'])[{x}]//p")
-       for x in range(1, 100):
-            try:
-                actualResult=(By.XPATH,f"(//div[@class='raven-field-wiki-view']//child::div[@class='field-content text-wrap'])[{x}]//p")
-                if self.isVisible(actualResult):
-                    print(self.getText(actualResult))
-
-                self.driver.execute_script("arguments[0].scrollIntoView();", actualResult)
-
-            except(NoSuchElementException,TimeoutException)as e:
-                print("error")
-                break
 
 
 
 
     def get_test_results(self):
-        """title = self.title()
+        title = self.title()
         type_text = self.typeField()
         affected_version_text = self.affectedVersonField()
         fix_version_text = self.fixVersionField()
@@ -173,15 +154,14 @@ class TESTSCRIPTEEXECUTION(Basepage):
         sprint_text = self.sprintField()
         issueResolution_text = self.issueResolutionField()
         testCategory_text = self.categoryTestField()
-        testType_text = self.typeTestField()
         issueLink_text = self.issueLinkField()
-        execution_text = self.executionField()"""
+        #execution_text = self.executionField()
 
         #action_text = self.actionField()
         #expectedResult_text= self.expectedResultField()
 
         return {
-            """"Title": title,
+            "Title": title,
             "Type": type_text,
             "Affected Version": affected_version_text,
             "Fix Version": fix_version_text,
@@ -192,8 +172,7 @@ class TESTSCRIPTEEXECUTION(Basepage):
             "Sprint" : sprint_text,
             "IssueResolution": issueResolution_text,
             "TestCategory": testCategory_text,
-            "TestType": testType_text,
             "IssueLink":issueLink_text,
-            "ExecutionLink":execution_text,"""
+            #"ExecutionLink":execution_text,
 
         }

@@ -58,14 +58,11 @@ class TestExecutionData:
         total_rows = sheet.max_row
         total_colmns = sheet.max_column
         l = []
-
-        linkText=["https://jira.jnj.com/secure/XrayExecuteTest!default.jspa?testExecIssueKey=","&testIssueKey="]
         for r in range(2, total_rows + 1):
-            str = ""
             for c in range(1, total_colmns + 1):
-                str+=(f"{linkText[c-1]}{sheet.cell(r, c).value}")
-            l.append(str)
+                l.append(sheet.cell(r, c).value)
         return l
+
 
 obj=TestExecutionData()
 print("Test Execution Data",obj.Links())
