@@ -18,7 +18,7 @@ driver.execute_script("arguments[0].scrollIntoView();", scrollTo)
 time.sleep(2)
 
 # Loop through potential actual result elements
-for x in range(1, 100):
+"""for x in range(1, 100):
     time.sleep(2)
     try:
         # Construct XPath for each actual result element
@@ -47,5 +47,5 @@ for x in range(1, 100):
         break
 
 
-# Close the browser window
+# Close the browser window"""
 driver.quit()
