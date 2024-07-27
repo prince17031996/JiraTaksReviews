@@ -10,7 +10,7 @@ driver = webdriver.Chrome()
 #testIssueKey="JCVZ-1030"
 executionKey="AFJX-11576"
 testIssueKey="AFJX-11010"
-driver.get(f"https://jira.jnj.com/secure/XrayExecuteTest!default.jspa?testExecIssueKey={executionKey}&testIssueKey={testIssueKey}")
+driver.get("https://jira.jnj.com/secure/XrayExecuteTest!default.jspa?testExecIssueKey=AFJX-11576&testIssueKey=AFJX-11010")
 driver.maximize_window()
 time.sleep(2)
 scrollTo=driver.find_element(By.XPATH,"//div[@class='execution-steps-module-heading mod-header']")

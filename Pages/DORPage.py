@@ -15,6 +15,7 @@ class DOR(Basepage):
 
     def run_tests(self, url):
         self.driver.get(url)
+        self.driver.maximize_window()
 
         # Load the workbook and select the "Result" worksheet or create it if it doesn't exist
         workbook = openpyxl.load_workbook(r'C:\Users\PRaj7\PycharmProjects\DORUserStory\Config\DOR_Check.xlsx')
