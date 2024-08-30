@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 driver = webdriver.Chrome()
+driver.implicitly_wait(10)
 #executionKey="JCVZ-1050"
 #testIssueKey="JCVZ-1030"
 executionKey="AFJX-11576"
